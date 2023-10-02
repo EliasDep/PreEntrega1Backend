@@ -1,9 +1,9 @@
 
 import express from 'express'
+import { ProductManager } from './ProductManager'
 
 const app = express()
 const port = 8080
-const ProductManager = require ('./ProductManager')
 
 
 app.use (express.json())
@@ -17,14 +17,10 @@ const productManager = new ProductManager (filePath)
 app.get ('/products', async (req, res) => {
 
     try {
-        const products = await productManager.getProducts()
+        const products = await productManager.getProducts(limit)
         const limit = parseInt (req.query.limit)
 
-        if (!isNaN (limit) && limit > 0) {
-            res.json ({ products: products.slice (0, limit)})
-        } else {
-            res.json ({ products })
-        }
+        res.json ({ products })
     } catch (error) {
         res.status(500).json ({ error: 'Error al obtener los productos' })
     }
@@ -48,5 +44,5 @@ app.get ('/products/:pid', async (req, res) => {
 
 
 app.listen (port, () => {
-    console.log ('Servidor Express escuchando en el puerto ${port}')
+    console.log (`Servidor Express escuchando en el puerto ${port}`)
 })

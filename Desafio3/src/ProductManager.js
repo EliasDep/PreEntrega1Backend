@@ -1,8 +1,7 @@
 
-const fs = require ('fs').promises
+import { promises as fs } from 'fs'
 
-
-class ProductManager {
+export class ProductManager {
 
     constructor (filePath) {
         this.products = []
@@ -75,10 +74,16 @@ class ProductManager {
     async getProducts () {
         
         try {
+            await this.createFile()
+            
             const fileContent = await fs.readFile (this.path, 'utf-8')
             this.products = JSON.parse (fileContent)
 
-            return this.products
+            if (!isNaN (limit) && limit > 0) {
+                return this.products.slice (0, limit)
+            } else {
+                return this.products
+            }
 
         } catch (error) {
             throw new Error ('Error al leer los productos desde el archivo')
