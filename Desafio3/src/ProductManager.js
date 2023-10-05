@@ -1,204 +1,123 @@
+import { promises as fs } from 'fs';
 
-import { promises as fs } from 'fs'
 
-export class ProductManager {
 
-    constructor (filePath) {
-        this.products = []
-        this.productIdCounter = 1
-        this.path = filePath
+export default class ProductManager {
+
+    constructor() {
+        this.path = "./src/products.json"
     }
 
-    async createFile () {
+
+
+    async getProducts() {
+
+        try {
+            const archivo = await fs.readFile (this.path, "utf-8")
+
+            return archivo
+        } catch (error) {
+            console.error ('Error', error.message)
+        }
+    }
+
+
+
+    async addProduct (addProduct) {
         
-        try {
-            await fs.access (this.path)
-        } catch (error) {
-            await fs.writeFile (this.path, '[]')
+        if (!addProduct) {
+
+          console.log ("Error")
+        } else {
+
+            const archivo = await fs.readFile (this.path, "utf-8")
+            const products = JSON.parse (archivo)
+            const product = products.find (prod => prod.code === addProduct.code)
+
+            if (product) {
+
+                return console.log ("Codigo ya existente")
+            } else {
+
+                addProduct.id = products.length + 1
+                products.push (addProduct)
+
+                await fs.writeFile (this.path, JSON.stringify(products, null, 2), "utf-8")
+
+                console.log ("Producto agregado correctamente")
+            }
         }
     }
 
-    async addProduct (title, description, price, thumbnail, code, stock) {
 
-        if (!title || !description || !price || !thumbnail || !code || stock === undefined) {
-            throw new Error ('Todos los campos son obligatorios')
-        }
-
-        if (this.products.some ((product) => product.code === code)) {
-            throw new Error ('Ya existe un producto con el mismo codigo')
-        }
-
-        const product = {
-            id: this.productIdCounter ++,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
-        }
-
-        this.products.push (product)
-
-        await this.saveProductToFile()
-        return product
-    }
-
-    async saveProductToFile () {
-
-        try {
-            await fs.writeFile (this.path, JSON.stringify (this.products, null, 2))
-        } catch (error) {
-            throw new Error ('Error al guardar los productos en el archivo')
-        }
-    }
 
     async getProductById (id) {
+        if (id) { 
 
-        try {
+            const archivo = await fs.readFile (this.path, "utf-8")
+            const products = JSON.parse (archivo)
+            const product = products.find (prod => prod.id === id)
 
-            const products = await this.getProducts()
-            const product = this.products.find ((product) => product.id === id)
-
-            if (!product) {
-                throw new Error ('Producto no encontrado')
-            }
-
-            return product
-
-        } catch (error) {
-            throw new Error ('Error al buscar el producto por ID')
+            return product ? product : ""
+        } else {
+            console.log ("Error, se requiere ID")
         }
     }
 
-    async getProducts () {
-        
-        try {
-            await this.createFile()
-            
-            const fileContent = await fs.readFile (this.path, 'utf-8')
-            this.products = JSON.parse (fileContent)
 
-            if (!isNaN (limit) && limit > 0) {
-                return this.products.slice (0, limit)
-            } else {
-                return this.products
-            }
-
-        } catch (error) {
-            throw new Error ('Error al leer los productos desde el archivo')
-        }
-    }
-
-    async updateProduct (id, fieldToUpdate, updatedValue) {
-
-        try {
-            
-            const products = await this.getProducts()
-            const product = products.find ((product) => product.id === id)
-            
-            if (!product) {
-                throw new Error ('Producto no encontrado')
-            }    
-            
-            product[fieldToUpdate] = updatedValue
-
-            await this.saveProductToFile()
-            return product
-
-        } catch (error) {
-            throw new Error ('Error al actualizar el producto')
-        }
-    }
 
     async deleteProduct (id) {
+        if (id) {
 
-        try {
-
-            const products = await this.getProducts()
+            const archivo = await fs.readFile (this.path, "utf-8")
+            const products = JSON.parse (archivo)
             const index = products.findIndex ((product) => product.id === id)
 
-            if (index === -1) {
-                throw new Error ('Producto no encontrado')
+            if (index !== -1) {
+
+                products.splice(index, 1)
+
+                await fs.writeFile (this.path, JSON.stringify (products, null, 2), "utf-8")
+
+                console.log ("Producto borrado con el ID:", id)
+            } else {
+
+                console.log ("ID no encontrado o invalido:",id)
             }
+        } else {
+            console.log ("Error, se requiere el ID")
+        }
+    }
 
-            products.splice (index, 1)
+    async updateProduct (id, updates) {
 
-            await this.saveProductToFile()
-            return true
+        if (!id || !updates) {
 
-        } catch (error) {
-            throw new Error ('Error al eliminar el producto')
+            console.log ("Error")
+        } else {
+
+            const archivo = await fs.readFile (this.path, "utf-8")
+            const products = JSON.parse (archivo)
+            const product = products.find (prod => prod.id === id)
+
+            if (product) {
+
+                const productsUpdated = products.map ((ele) => {
+
+                    if (ele.id==id) {
+
+                        updates.id = id
+                        return updates
+                    } else {
+                        return ele
+                    }
+                })
+
+                await fs.writeFile (this.path, JSON.stringify (productsUpdated, null, 2), "utf-8")
+
+            } else {
+                console.log("ID no found:",id)
+            }
         }
     }
 }
-
-
-
-// Ejemplo de uso
-
-(async () => {
-
-    const filePath = 'fileSystem.json'
-    const productManager = new ProductManager (filePath)
-
-
-
-    // Crear archivo si no existe
-    await productManager.createFile()
-
-
-
-    // Obtener productos
-    const products = await productManager.getProducts()
-    console.log (products)
-
-
-
-    // Obtener productos con el ID
-    try {
-
-        const product = await productManager.getProductById (2)
-        console.log (product)
-    } catch (error) {
-        console.error (error.message)
-    }
-
-
-
-    // Agregar productos
-    await productManager.addProduct('Producto prueba 1', 'Este es un producto prueba', 100, 'Sin imagen', 'abc123', 10)
-    await productManager.addProduct('Producto prueba 2', 'Este es un producto prueba', 200, 'Sin imagen', 'def456', 20)
-    await productManager.addProduct('Producto prueba 3', 'Este es un producto prueba', 300, 'Sin imagen', 'ghi789', 30)
-
-
-
-    // Actualizar productos
-    try {
-        const updateProduct = await productManager.updateProduct (2, 'price', 250)
-
-        console.log ('Producto actualizado: ', updateProduct)
-    } catch (error) {
-        console.error (error.message)
-    }
-
-
-
-    // Eliminar producto
-    try {
-
-        const deleted = await productManager.deleteProduct (3)
-
-        if (deleted) {
-            console.log ('Producto elimiando con exito')
-        } else {
-            console.log ('No se encontro el producto para eliminar')
-        }
-    } catch (error) {
-        console.error (error.message)
-    }
-
-    // Obtener productos actualizados
-    const updatedProducts = await productManager.getProducts()
-    console.log ('Productos actualizados: ', updatedProducts)
-})()
