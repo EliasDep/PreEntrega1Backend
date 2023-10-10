@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Products</title>
+</head>
+
+<body>
+    <main>
+        <h1>Lista de rutas productos:</h1>
+        <h2>"/api/products" para ver todos los productos.</h2>
+        <h2>"/api/products/id" para ver un producto especifico.</h2>
+        <h2>"/id" para eliminar un producto.</h2>
+        <h2>"/api/update/id" para actualizar un producto.</h2>
+
+        <h3>Formulario Agregar Producto 👇🏻</h3>
+
+        <form action="/" method="POST">
+            <label for="title">Título:</label>
+            <input type="text" name="title" required><br>
+
+            <label for="description">Descripción:</label>
+            <input type="text" name="description" required><br>
+
+            <label for="code">Código:</label>
+            <input type="text" name="code" required><br>
+
+            <label for="price">Precio:</label>
+            <input type="number" name="price" required><br>
+
+            <label for="stock">Stock:</label>
+            <input type="number" name="stock" required><br>
+
+            <label for="category">Categoría:</label>
+            <input type="text" name="category" required><br>
+
+            <input type="hidden" name="status" value="true">
+
+            <input type="submit" value="Agregar Producto">
+        </form>
+
+        <p>------------------------------------------------------------------------------</p>
+
+        <h1>Lista de rutas carrito:</h1>
+        <h2>"/api/carts/id/product" para agregar un producto al carrito.</h2>
+        <h2>"/api/carts" para agregar al carrito.</h2>
+        <h2>"/api/carts/id" para ver un producto especifico.</h2>
+    </main>
+</body>
+</html>
