@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 import { fileURLToPath  } from 'url'
+import { v4 as uuidv4 } from 'uuid'
 
 const __filename = fileURLToPath (import.meta.url)
 const __dirname = path.dirname (__filename)
@@ -43,7 +44,7 @@ export default class ProductManager {
                 return console.log ("Codigo ya existente")
             } else {
 
-                addProduct.id = products.length + 1
+                addProduct.id = uuidv4()
                 products.push (addProduct)
 
                 await fs.writeFile (this.path, JSON.stringify(products, null, 2), "utf-8")

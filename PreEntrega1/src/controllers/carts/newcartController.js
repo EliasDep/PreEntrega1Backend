@@ -1,25 +1,18 @@
-import { Router } from 'express'
-import CartManager from '../classes/CartManager.js'
-
-
-const router = Router()
+import CartManager from '../../classes/CartManager.js'
 
 const cartManager = new CartManager
 
 
-router.post ('/carts', async (req, res) => {
-
-    const { items, code } = req.body
+export const createCart = async (req, res) => {
+    
+    const { items } = req.body
   
-    if (!items || !code) {
+    if (!items) {
 
       return res.status(400).json ({ error: 'Todos los campos son obligatorios.' })
     }
   
-    const newCart = {
-      items,
-      code
-    }
+    const newCart = items
   
     try {
       
@@ -32,6 +25,4 @@ router.post ('/carts', async (req, res) => {
 
       return res.status(500).json ({ error: 'Error interno del servidor.' })
     }
-})
-
-export default router
+}

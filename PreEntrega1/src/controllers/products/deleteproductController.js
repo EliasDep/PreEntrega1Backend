@@ -1,14 +1,10 @@
-import { Router } from 'express'
-import ProductManager from '../classes/ProductManager.js'
-
-
-const router = Router()
+import ProductManager from '../../classes/ProductManager.js'
 
 const productManager = new ProductManager()
 
 
-router.get ('/:pid', async (req, res) => {
-
+export const deleteProduct = async (req, res) => {
+    
     const { pid } = req.params
 
     try {
@@ -27,6 +23,4 @@ router.get ('/:pid', async (req, res) => {
         console.error ('Error al eliminar el producto:', error)
         res.status(500).json ({ message: 'Error interno del servidor'})
     }
-})
-
-export default router
+}

@@ -3,13 +3,13 @@ import path from 'path'
 import bodyParser from 'body-parser'
 import { fileURLToPath  } from 'url'
 
-import productsRouter from './routes/productsRouter.js'
-import newproductRouter from './routes/newproductRouter.js'
-import updateproductsRouter from './routes/updateproductRouter.js'
-import deleteproductRouter from './routes/deleteproductRouter.js'
-import cartsRouter from './routes/cartsRouter.js'
-import newcartRouter from './routes/newcartRouter.js'
-import cartproductRouter from './routes/cartproductRouter.js'
+import productsRouter from './routes/products/productsRouter.js'
+import newproductRouter from './routes/products/newproductRouter.js'
+import updateproductsRouter from './routes/products/updateproductRouter.js'
+import deleteproductRouter from './routes/products/deleteproductRouter.js'
+import cartsRouter from './routes/carts/cartsRouter.js'
+import newcartRouter from './routes/carts/newcartRouter.js'
+import cartproductRouter from './routes/carts/cartproductRouter.js'
 
 const app = express()
 
@@ -21,8 +21,8 @@ app.use (express.urlencoded ({ extended: true }))
 app.use (bodyParser.urlencoded({ extended: true }))
 app.use (express.static (path.join (__dirname, '../public')))
 
-app.use ('/', newproductRouter, deleteproductRouter)
-app.use ('/api', productsRouter, updateproductsRouter, newcartRouter, cartsRouter, cartproductRouter)
+app.use ('/', deleteproductRouter)
+app.use ('/api', productsRouter, updateproductsRouter, newcartRouter, cartsRouter, cartproductRouter, newproductRouter)
 
 
 app.use ((error, req, res, next) => {

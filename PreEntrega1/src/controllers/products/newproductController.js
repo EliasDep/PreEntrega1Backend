@@ -1,13 +1,9 @@
-import { Router } from 'express'
-import ProductManager from '../classes/ProductManager.js'
-
-
-const router = Router()
+import ProductManager from '../../classes/ProductManager.js'
 
 const productManager = new ProductManager
 
 
-router.post ('/', async (req, res) => {
+export const createProduct = async (req, res) => {
 
     const { title, description, code, price, stock, category } = req.body
     const status = true
@@ -38,6 +34,4 @@ router.post ('/', async (req, res) => {
 
       return res.status(500).json ({ error: 'Error interno del servidor.' })
     }
-})
-
-export default router
+}
