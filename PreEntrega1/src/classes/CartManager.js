@@ -37,21 +37,13 @@ export default class CartManager {
 
             const archivo = await fs.readFile (this.path, "utf-8")
             const products = JSON.parse (archivo)
-            const product = products.find (prod => prod.code === addProduct.code)
+        
+            addProduct.id = uuidv4()
+            products.push (addProduct)
 
-            if (product) {
+            await fs.writeFile (this.path, JSON.stringify(products, null, 2), "utf-8")
 
-                return console.log ("Codigo ya existente")
-            } else {
-
-                addProduct.id = uuidv4()
-                addProduct.items = []
-                products.push (addProduct)
-
-                await fs.writeFile (this.path, JSON.stringify(products, null, 2), "utf-8")
-
-                console.log ("Producto agregado correctamente")
-            }
+            console.log ("Producto agregado correctamente")    
         }
     }
 
@@ -75,19 +67,21 @@ export default class CartManager {
 
     async addCartProduct (cid, productToAdd) {
 
-        const cartById = await this.exist (cid)
+        const cartById = await this.getCartById (cid)
         
         if(!cartById) {
 
-            return res.status(404).json ({ message: 'Carrito ID no encontrado' })
+            console.log('Carrito ID no encontrado')
+            return
         }
 
 
-        const productById = await productALL.exist (productToAdd)
+        const productById = await this.getProductById (productToAdd)
 
         if (!productById) {
 
-            return res.status(404).json ({ message: 'Producto ID no encontrado' })
+            console.log ('Producto ID no encontrado')
+            return
         }
 
 
@@ -98,19 +92,51 @@ export default class CartManager {
 
             const productInCart = cartById.products.find ((prod) => prod.id === productToAdd)
 
-            productInCart.quantity +1
-            console.log (productInCart.cantidad)
+            productInCart.quantity += 1
+            console.log (productInCart.quantity)
 
             const cartsConcat = [cartById, ...cartFilter]
 
             await this.addCart (cartsConcat)
-            res.status(201).json ({ message: 'Item Agregado al carrito +1' })       
+            
+            console.log ('Item Agregado al carrito +1')
+            return       
         }
         
 
         const cartsConcat = [{id:cid, products:[{id: productById.id , quantity:1}]} ,...cartFilter]
 
         await this.addCart (cartsConcat)
-        res.status(201).json ({ message: 'Item Agregado al carrito' }) 
+        
+        console.log ('Item Agregado al carrito')
+        return 
+    }
+
+
+
+    async getProductById (productId) {
+
+        const cartData = await this.getCart()
+    
+        try {
+
+            const cart = JSON.parse (cartData)
+    
+            for (const cartItem of cart) {
+
+                for (const product of cartItem.products) {
+
+                    if (product.id === productId) {
+                        return product
+                    }
+                }
+            }
+    
+            return null
+        } catch (error) {
+
+            console.error ('Error al buscar el producto en el carrito', error)
+            return null
+        }
     }
 }

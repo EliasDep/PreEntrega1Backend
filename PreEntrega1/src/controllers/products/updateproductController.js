@@ -6,11 +6,11 @@ const productManager = new ProductManager()
 export const updateProduct = async (req, res) => {
     
     const { pid } = req.params
-    const { title, description, code, price, stock, category } = req.body
+    const { title, description, price, code, stock } = req.body
     
     try {
         
-        const productToUpdate = await productManager.getProductById (parseInt(pid))
+        const productToUpdate = await productManager.getProductById (pid)
 
         if (!productToUpdate) {
         return res.status(404).json ({ error: 'Product not found' })
@@ -20,8 +20,8 @@ export const updateProduct = async (req, res) => {
 
         title: title || productToUpdate.title,
         description: description || productToUpdate.description,
-        code: code || productToUpdate.code,
         price: price || productToUpdate.price,
+        code: code || productToUpdate.code,
         stock: stock || productToUpdate.stock,
         id: productToUpdate.id
         }

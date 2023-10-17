@@ -5,14 +5,16 @@ const cartManager = new CartManager
 
 export const createCart = async (req, res) => {
     
-    const { items } = req.body
+    const { products } = req.body
   
-    if (!items) {
+    if (!products) {
 
       return res.status(400).json ({ error: 'Todos los campos son obligatorios.' })
     }
   
-    const newCart = items
+    const newCart = {
+      products
+    }
   
     try {
       

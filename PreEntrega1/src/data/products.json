@@ -1,65 +1,58 @@
 [
   {
     "title": "Milanesa",
-    "description": "Rebozada de pollo",
-    "price": 280,
-    "thumbnail": "Sin Imagen",
-    "code": "136",
-    "stock": 120,
-    "id": 1
+    "description": "Rebozada de pan",
+    "price": 230,
+    "code": "150",
+    "stock": 150,
+    "id": "5e79f2d7-4afd-42aa-9aa4-fadb43b80cfe"
   },
   {
     "title": "Fideos",
     "description": "Tirabuzon",
     "price": 280,
-    "thumbnail": "Sin Imagen",
     "code": "136",
     "stock": 120,
-    "id": 2
+    "id": "5e79f2d7-4afd-42aa-9aa4-fnej4c5d0cfe"
   },
   {
     "title": "Papa",
     "description": "Blanca lavada",
     "price": 280,
-    "thumbnail": "Sin Imagen",
     "code": "136",
     "stock": 800,
-    "id": 3
+    "id": "5e79f2d7-4afd-42aa-9aa4-fadb4c5d0msp"
   },
   {
     "title": "Cafe",
     "description": "Torrado",
     "price": 280,
-    "thumbnail": "Sin Imagen",
     "code": "136",
     "stock": 120,
-    "id": 4
+    "id": "5e79f2d7-8chd-42aa-9aa4-fadb4c5d0cfe"
   },
   {
     "title": "Azucar",
     "description": "Morena",
     "price": 280,
-    "thumbnail": "Sin Imagen",
     "code": "136",
     "stock": 120,
-    "id": 5
+    "id": "2b99f2d7-4afd-42aa-9aa4-fadb4c5d0cfe"
   },
   {
     "title": "Pera",
     "description": "Blanca lavada",
     "price": 280,
-    "thumbnail": "Sin Imagen",
     "code": "136",
     "stock": 800,
-    "id": 6
+    "id": "5e79f2d7-4afd-38hc-9aa4-fadb4c5d0cfe"
   },
   {
     "title": "Manzana",
     "description": "Roja",
     "price": 280,
-    "thumbnail": "Sin Imagen",
     "code": "136",
     "stock": 800,
-    "id": 7
+    "id": "5e79f2d7-4afd-42aa-9wq5-fadb4c5d0cfe"
   }
 ]

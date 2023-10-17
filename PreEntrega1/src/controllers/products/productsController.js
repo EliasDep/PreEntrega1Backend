@@ -21,7 +21,7 @@ export const getProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     
     const { pid } = req.params
-    const product = await productManager.getProductById (parseInt(pid))
+    const product = await productManager.getProductById (pid)
 
     if (product) {
         return res.json (product)

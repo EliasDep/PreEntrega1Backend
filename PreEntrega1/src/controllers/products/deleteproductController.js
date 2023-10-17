@@ -9,13 +9,13 @@ export const deleteProduct = async (req, res) => {
 
     try {
 
-        const productToDelete = await productManager.getProductById (parseInt(pid))
+        const productToDelete = await productManager.getProductById (pid)
 
         if (!productToDelete) {
             return res.status(404).json ({ error: 'Product not found' })
         }
 
-        await productManager.deleteProduct (parseInt(pid))
+        await productManager.deleteProduct (pid)
 
         res.json ({ message: 'Producto eliminado correctamente', deletedProduct: productToDelete})
     } catch (error) {

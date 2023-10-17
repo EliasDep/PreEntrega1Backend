@@ -5,6 +5,6 @@ import { updateProduct } from '../../controllers/products/updateproductControlle
 const router = Router()
 
 
-router.put ('/products/update/:pid', updateProduct)
+router.put ('/products/:pid', updateProduct)
 
 export default router

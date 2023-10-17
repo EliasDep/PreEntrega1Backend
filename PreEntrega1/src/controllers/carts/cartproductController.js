@@ -6,7 +6,7 @@ const cartManager = new CartManager()
 export const addProductToCart = async (req, res) => {
     
     try {
-
+        
         const { cid, pid } = req.params
         const { productId, quantity } = req.body
 
